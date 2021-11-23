@@ -1,13 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import GitHubMain from "./Components/GitHubHome/GitHubMain";
+import GitHubProfiler from "./Components/GitHubHome";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <GitHubMain />
+    <GitHubProfiler />
   </React.StrictMode>,
   document.getElementById("root")
 );

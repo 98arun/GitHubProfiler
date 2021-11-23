@@ -1,4 +1,4 @@
-import "./Github.css";
+import "./index.css";
 import { useState } from "react";
 import { GetRequest } from "../../Utilites/Network";
 import RepoItem from "./Views/RepoItem";
@@ -58,7 +58,7 @@ function GitHubProfiler() {
   };
 
   return (
-    <>
+    <div className="main-container">
       <div className="container">
         <h1 className="container-title">GitHub Profile Details </h1>
         <div className="input-wrap">
@@ -83,7 +83,7 @@ function GitHubProfiler() {
           {_renderRepoList()}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

@@ -1,5 +1,5 @@
 import { memo } from "react";
-import "../Github.css";
+import "../index.css";
 
 function ProfileCard(props: any) {
   const { uname, image } = props;

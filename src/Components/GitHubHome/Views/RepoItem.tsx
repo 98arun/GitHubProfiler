@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 function RepoItem(props: any) {
   const { html_url, name } = props;
 
@@ -9,4 +11,4 @@ function RepoItem(props: any) {
     </div>
   );
 }
-export default RepoItem;
+export default memo(RepoItem);
