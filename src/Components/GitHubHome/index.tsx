@@ -1,15 +1,12 @@
 import "./index.css";
 import { useState } from "react";
-import { GetRequest } from "../../Utilites/Network";
 import RepoItem from "./Views/RepoItem";
 import ProfileCard from "./Views/ProfileCard";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsersRequest } from "../../Redux/Action";
 
 function GitHubProfiler() {
   const [searchInput, setSearchInput] = useState("");
-  let [userName, setUserName] = useState("");
-  let [avatar, setAvatar] = useState("");
-  let [repoList, setRepoList] = useState([]);
-
   const _handleOnInputChange = (data: any) => {
     if (!data || !data.target) {
       return;
@@ -17,46 +14,20 @@ function GitHubProfiler() {
     setSearchInput(data.target.value);
   };
 
-  const _handleSearchProfile = async () => {
-    if (!searchInput || searchInput.length === 0) {
-      alert("Enter Your GitHub UserID");
-    }
-    const profileResponse = await GetRequest(
-      `https://api.github.com/users/${searchInput}`
-    );
-
-    //Check & Handle if there is a fallback response from the api
-    if (!profileResponse) {
-      alert("You Entered Wrong UserID");
-      setSearchInput("");
-      setRepoList([]);
-      setUserName("");
-      setAvatar("");
-      return;
-    }
-
-    const { avatar_url, name, repos_url } = profileResponse;
-    setUserName(name);
-    setAvatar(avatar_url);
-
-    const repoResponse = await GetRequest(repos_url);
-
-    if (!repoResponse) {
-      return;
-    }
-    setRepoList(repoResponse);
-  };
+  const myState = useSelector((state: any) => state.userReducer);
+  const dispatch = useDispatch();
+  // console.log("LN63", myState);
+  const { name, image, repo } = myState.users;
 
   const _renderRepoList = () => {
-    if (!repoList || repoList.length === 0) {
+    if (!repo || repo.length === 0) {
       return null;
     }
-    const list = repoList.map((data: any) => {
+    const list = repo.map((data: any) => {
       return <RepoItem key={data.id} {...data} />;
     });
     return <div className="repo-list">{list}</div>;
   };
-
   return (
     <div className="main-container">
       <div className="container">
@@ -72,14 +43,16 @@ function GitHubProfiler() {
           <button
             className="input-btn"
             type="button"
-            onClick={_handleSearchProfile}
             disabled={!searchInput || searchInput.length === 0}
+            onClick={() => {
+              dispatch(fetchUsersRequest(searchInput));
+            }}
           >
             Search
           </button>
         </div>
         <div className="cards">
-          <ProfileCard uname={userName} image={avatar} />
+          <ProfileCard uname={name} image={image} />
           {_renderRepoList()}
         </div>
       </div>
